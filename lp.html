@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>グループ整理券システム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #c80b4c, #ff1464);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .feature-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .how-it-works {
+            background: #f8f8f8;
+            padding: 60px 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin: 40px 0;
+            gap: 30px;
+        }
+
+        .step-number {
+            background: #c80b4c;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .time-table {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .time-table h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #c80b4c;
+        }
+
+        .time-slot {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .time-slot:last-child {
+            border-bottom: none;
+        }
+
+        .cta {
+            text-align: center;
+            padding: 60px 0;
+            background: #f8f8f8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #c80b4c;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2em;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2em;
+            color: #333;
+        }
+
+        .important-note {
+            background: #fff3f7;
+            border-left: 4px solid #c80b4c;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>KV</h1>
+    </div>
+
+    <div class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">システムの使い方</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>整理券を購入</h3>
+                        <p>購入時に抽選で1～5のグループ番号が割り振られます。<br>
+                        グループごとの入場時間が異なりますので、ご自身のグループ番号をご確認ください。</p>
+                        <div class="important-note">
+                            ※整理券購入後のグループ変更はできません<br>
+                            ※グループ番号は購入順ではなく、ランダムに割り振られます
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>呼び出しを待機</h3>
+                        <p>スマートフォンまたは会場のモニターで、現在呼び出し中のグループ番号をご確認ください。<br>
+                        自分のグループの順番が近づくと通知でお知らせします。</p>
+                        <div class="time-table">
+                            <h3>グループごとの呼び出し目安時間</h3>
+                            <div class="time-slot">
+                                <span>グループ1</span>
+                                <span>10:00～</span>
+                            </div>
+                            <div class="time-slot">
+                                <span>グループ2</span>
+                                <span>10:30～</span>
+                            </div>
+                            <div class="time-slot">
+                                <span>グループ3</span>
+                                <span>11:00～</span>
+                            </div>
+                            <div class="time-slot">
+                                <span>グループ4</span>
+                                <span>11:30～</span>
+                            </div>
+                            <div class="time-slot">
+                                <span>グループ5</span>
+                                <span>12:00～</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>グループ呼び出し</h3>
+                        <p>自分のグループが呼ばれたら受付へお越しください。<br>
+                        同じグループ内でも整理券番号順にご案内いたします。</p>
+                        <div class="important-note">
+                            ※呼び出しから15分以上経過した場合は、最後尾でのご案内となります
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta">
+        <div class="container">
+            <h2>整理券の購入はこちら</h2>
+            <p>窓口での購入の他、専用アプリからもご購入いただけます</p>
+            <a href="#" class="cta-button">整理券を購入する</a>
+        </div>
+    </div>
+</body>
+</html>

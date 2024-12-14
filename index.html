@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整理券管理システム</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-45deg, 
+                rgba(200, 11, 76, 0.05) 25%, 
+                rgba(255, 20, 100, 0.05) 50%, 
+                rgba(200, 11, 76, 0.05) 75%
+            );
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            pointer-events: none;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c80b4c, #ff1464);
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(200, 11, 76, 0.3);
+        }
+
+        .current-status {
+            background: linear-gradient(135deg, rgba(200, 11, 76, 0.15), rgba(255, 20, 100, 0.15));
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .current-group {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            margin: 15px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .next-group {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .estimated-time {
+            text-align: center;
+            color: #ff1464;
+            margin: 15px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .ticket-info {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .group-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(200, 11, 76, 0.1);
+            border-radius: 10px;
+        }
+
+        .group-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff1464;
+        }
+
+        .group-label {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .ticket-id {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ff1464;
+            margin: 20px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .qr-code {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .notification {
+            background: linear-gradient(135deg, #ff1464, #c80b4c);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(200, 11, 76, 0.3);
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-bg"></div>
+    <div class="container">
+        <div class="header">
+            <h1>整理券管理システム</h1>
+        </div>
+
+        <div class="notification" id="notification">
+            まもなくあなたのグループの呼び出しが始まります
+        </div>
+
+        <div class="current-status">
+            <h2>現在の呼び出し状況</h2>
+            <div class="current-group">現在：グループ1 呼び出し中</div>
+            <div class="next-group">次回：グループ2</div>
+            <div class="estimated-time">呼び出し目安：約15分後</div>
+        </div>
+
+        <div class="ticket-info">
+            <h2>あなたの整理券情報</h2>
+            <div class="group-info">
+                <div>
+                    <div class="group-label">あなたのグループ</div>
+                    <div class="group-number">2</div>
+                </div>
+            </div>
+            <div class="ticket-id">チケットID: A2B7C9</div>
+            <div class="qr-code" id="qrCode"></div>
+        </div>
+    </div>
+
+    <script>
+        // QRコードの生成
+        const qrCode = new QRCode(document.getElementById("qrCode"), {
+            text: "A2B7C9",
+            width: 200,
+            height: 200
+        });
+
+        // 通知の表示
+        setTimeout(() => {
+            document.getElementById("notification").style.display = "block";
+        }, 3000);
+
+        // グループ状況の更新（デモ用）
+        let currentGroup = 1;
+        let estimatedMinutes = 15;
+        
+        setInterval(() => {
+            currentGroup = currentGroup % 5 + 1;
+            estimatedMinutes = Math.max(5, estimatedMinutes - 5);
+            
+            document.querySelector(".current-group").textContent = 
+                `現在：グループ${currentGroup} 呼び出し中`;
+            document.querySelector(".next-group").textContent = 
+                `次回：グループ${currentGroup % 5 + 1}`;
+            document.querySelector(".estimated-time").textContent = 
+                `呼び出し目安：約${estimatedMinutes}分後`;
+        }, 5000);
+    </script>
+</body>
+</html>

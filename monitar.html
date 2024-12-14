@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>整理券管理システム - 呼出表示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            background: #ffffff;
+            color: #333;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 40px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            color: #333;
+        }
+
+        .current-group {
+            text-align: center;
+            padding: 60px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 20px;
+            max-width: 1200px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .group-title {
+            font-size: 48px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .group-number {
+            font-size: 160px;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #c80b4c;
+        }
+
+        .group-status {
+            font-size: 36px;
+            color: #666;
+        }
+
+        .time {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 36px;
+            color: #333;
+        }
+
+        .notice {
+            text-align: center;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #f8f8f8;
+            border-radius: 15px;
+            color: #666;
+        }
+
+        .notice-text {
+            font-size: 28px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 20px;
+            font-size: 32px;
+            color: #666;
+            border-top: 2px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="time" id="currentTime">00:00</div>
+        
+        <div class="header">
+            <h1>整理券呼出状況</h1>
+        </div>
+
+        <div class="current-group">
+            <div class="group-title">現在呼出中</div>
+            <div class="group-number">グループ 1</div>
+            <div class="group-status">ご案内中です</div>
+        </div>
+
+        <div class="notice">
+            <div class="notice-text">
+                ※お呼び出しグループの方は受付カウンターまでお越しください<br>
+                ※呼出後15分を過ぎた場合は最後尾にご案内となります
+            </div>
+        </div>
+
+        <div class="footer">
+            平均待ち時間：約15分
+        </div>
+    </div>
+
+    <script>
+        // 現在時刻の更新
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}`;
+        }
+
+        // グループ番号の更新（デモ用）
+        let currentGroup = 1;
+        function updateGroups() {
+            currentGroup = (currentGroup % 10) + 1;
+            document.querySelector('.group-number').textContent = `グループ ${currentGroup}`;
+        }
+
+        // 待ち時間の更新（デモ用）
+        function updateWaitTime() {
+            const waitTimes = [15, 20, 25, 30];
+            const randomWait = waitTimes[Math.floor(Math.random() * waitTimes.length)];
+            document.querySelector('.footer').textContent = `平均待ち時間：約${randomWait}分`;
+        }
+
+        // 初期化と定期更新
+        setInterval(updateTime, 1000);
+        setInterval(updateGroups, 10000);
+        setInterval(updateWaitTime, 30000);
+        updateTime();
+    </script>
+</body>
+</html>
